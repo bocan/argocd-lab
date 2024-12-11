@@ -1,4 +1,6 @@
 prometheus:
+  pushgateway:
+    enabled: false
   server:
     persistentVolume:
       size: 8Gi
