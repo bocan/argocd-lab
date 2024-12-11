@@ -9,3 +9,6 @@ grafana:
 
     hosts:
       - grafana.local
+  persistence:
+    type: pvc
+    enabled: true
