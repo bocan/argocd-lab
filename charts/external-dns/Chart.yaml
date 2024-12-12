@@ -4,5 +4,5 @@ version: 1.0.0
 dependencies:
   - name: external-dns
     version: 1.15.0
-    repository: https://artifacthub.io/packages/helm/external-dns
+    repository: https://kubernetes-sigs.github.io/external-dns/
     namespace: external-dns
