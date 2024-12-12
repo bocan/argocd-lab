@@ -1,0 +1,18 @@
+external-dns:
+  #extraVolumes:
+  #  - name: aws-credentials
+  #    secret:
+  #      secretname: external-dns
+  #extraVolumeMounts:
+  #  volumeMounts:
+  #    - name: aws-credentials
+  #      mountPath: /.aws
+  #      readOnly: true
+  #domainFilters: ["funderburg.uk"]
+  #provider:
+  #  name: aws
+  env:
+    - name: AWS_DEFAULT_REGION
+      value: eu-west-1
+    - name: AWS_SHARED_CREDENTIALS_FILE
+      value: /.aws/credentials
