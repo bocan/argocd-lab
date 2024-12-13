@@ -8,7 +8,7 @@ grafana:
     pathType: Prefix
 
     hosts:
-      - grafana.local
+      - grafana.funderburg.uk
   persistence:
     type: pvc
     enabled: true
