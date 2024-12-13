@@ -1,6 +1,6 @@
 argo-cd:
   global:
-    domain: argocd.example.com
+    domain: argocd.funderburg.uk
   server:
     # Argo CD server ingress configuration
     ingress:
