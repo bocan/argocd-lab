@@ -12,7 +12,7 @@ external-dns:
   domainFilters: ["funderburg.uk"]
   env:
     - name: AWS_DEFAULT_REGION
-      value: eu-west-1
+      value: eu-west-2
     - name: AWS_SHARED_CREDENTIALS_FILE
       value: /.aws/aws-credentials
   logLevel: debug
