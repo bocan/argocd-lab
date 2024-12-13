@@ -1,7 +1,7 @@
 grafana:
   ingress:
     annotations:
-      external-dns.alpha.kubernetes.io/target: "grafana.funderburg.uk"
+      external-dns.alpha.kubernetes.io/host: "grafana.funderburg.uk"
     enabled: true
     ingressClassName: traefik
     path: /
