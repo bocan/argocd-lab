@@ -14,5 +14,5 @@ external-dns:
     - name: AWS_DEFAULT_REGION
       value: eu-west-2
     - name: AWS_SHARED_CREDENTIALS_FILE
-      value: /.aws/aws-credentials
+      value: /.aws/credentials
   logLevel: debug
