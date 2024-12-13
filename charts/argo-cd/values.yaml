@@ -1,6 +1,9 @@
 argo-cd:
   global:
     domain: argocd.funderburg.uk
+  configs:
+    params:
+      server.insecure: true
   server:
     # Argo CD server ingress configuration
     ingress:
@@ -18,10 +21,3 @@ argo-cd:
     enabled: false
   applicationSet:
     enabled: false
-
-
-
-
-
-
-
