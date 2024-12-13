@@ -1,10 +1,10 @@
 external-dns:
   provider:
     name: aws
-  extraVolumes:
-    - name: aws-credentials
-      secret:
-        secretname: external-dns
+  #extraVolumes:
+  #  - name: aws-credentials
+  #    secret:
+  #      secretname: external-dns
   extraVolumeMounts:
     - name: aws-credentials
       mountPath: /.aws
