@@ -1,14 +1,14 @@
 external-dns:
   provider:
     name: aws
-  #extraVolumes:
-  #  - name: aws-credentials
-  #    secret:
-  #      secretname: external-dns
-  extraVolumeMounts:
+  extraVolumes:
     - name: aws-credentials
-      mountPath: /.aws
-      readOnly: true
+      secret:
+        secretName: external-dns
+  #extraVolumeMounts:
+  #  - name: aws-credentials
+  #    mountPath: /.aws
+  #    readOnly: true
   domainFilters: ["funderburg.uk"]
   env:
     - name: AWS_DEFAULT_REGION
