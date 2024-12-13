@@ -9,7 +9,7 @@ external-dns:
     - name: aws-credentials
       mountPath: /.aws
       readOnly: true
-  domainFilters: ["funderburg.uk"]
+  domainFilters: [".funderburg.uk"]
   sources:
     - ingress
   managedRecordTypes:
