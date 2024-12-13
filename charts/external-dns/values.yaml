@@ -5,10 +5,10 @@ external-dns:
     - name: aws-credentials
       secret:
         secretName: external-dns
-  #extraVolumeMounts:
-  #  - name: aws-credentials
-  #    mountPath: /.aws
-  #    readOnly: true
+  extraVolumeMounts:
+    - name: aws-credentials
+      mountPath: /.aws
+      readOnly: true
   domainFilters: ["funderburg.uk"]
   env:
     - name: AWS_DEFAULT_REGION
