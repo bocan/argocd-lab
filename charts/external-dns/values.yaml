@@ -10,9 +10,15 @@ external-dns:
       mountPath: /.aws
       readOnly: true
   domainFilters: ["funderburg.uk"]
+  sources:
+    - ingress
+  managedRecordTypes:
+    - A
   env:
     - name: AWS_DEFAULT_REGION
       value: eu-west-2
     - name: AWS_SHARED_CREDENTIALS_FILE
       value: /.aws/credentials
   logLevel: debug
+
+
