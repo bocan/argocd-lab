@@ -2,6 +2,7 @@ grafana:
   ingress:
     annotations:
       external-dns.alpha.kubernetes.io/host: "grafana.funderburg.uk"
+      cert-manager.io/cluster-issuer: letsencrypt-prod 
     enabled: true
     ingressClassName: traefik
     path: /
