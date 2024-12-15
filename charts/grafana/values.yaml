@@ -11,6 +11,11 @@ grafana:
 
     hosts:
       - grafana.funderburg.uk
+    tls:
+      - secretName: grafana-funderburg-uk-tls
+        hosts:
+          - grafana.funderburg.uk
+  
   persistence:
     type: pvc
     enabled: true
