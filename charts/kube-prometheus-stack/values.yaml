@@ -1,131 +1,131 @@
-## Create default rules for monitoring the cluster
-##
-defaultRules:
-  create: true
-  rules:
-    etcd: false
+kube-prometheus-stack:
+  ## Create default rules for monitoring the cluster
+  ##
+  defaultRules:
+    create: true
+    rules:
+      etcd: false
 
-alertmanager:
-  ingress:
-    enabled: true
-    ingressClassName: traefik
+  alertmanager:
+    ingress:
+      enabled: true
+      ingressClassName: traefik
 
-    annotations:
-      external-dns.alpha.kubernetes.io/host: "alertmanager.funderburg.uk"
-      cert-manager.io/cluster-issuer: letsencrypt-prod
+      annotations:
+        external-dns.alpha.kubernetes.io/host: "alertmanager.funderburg.uk"
+        cert-manager.io/cluster-issuer: letsencrypt-prod
 
-    hosts:
-    - alertmanager.funderburg.uk
-
-    ## Paths to use for ingress rules - one path should match the alertmanagerSpec.routePrefix
-    ##
-    paths:
-    - /
-
-    ## TLS configuration for Alertmanager Ingress
-    ## Secret must be manually created in the namespace
-    ##
-    tls:
-    - secretName: alertmanager-general-tls
       hosts:
       - alertmanager.funderburg.uk
 
-grafana:
+      ## Paths to use for ingress rules - one path should match the alertmanagerSpec.routePrefix
+      ##
+      paths:
+      - /
 
-  adminPassword: prom-operator
+      ## TLS configuration for Alertmanager Ingress
+      ## Secret must be manually created in the namespace
+      ##
+      tls:
+      - secretName: alertmanager-general-tls
+        hosts:
+        - alertmanager.funderburg.uk
 
-  ingress:
-    enabled: true
+  grafana:
 
-    ingressClassName: traefik
+    adminPassword: prom-operator
 
-    annotations:
-      external-dns.alpha.kubernetes.io/host: "grafana.funderburg.uk"
-      cert-manager.io/cluster-issuer: letsencrypt-prod
+    ingress:
+      enabled: true
 
-    ## Hostnames.
-    ## Must be provided if Ingress is enable.
-    ##
-    hosts:
-    - grafana.funderburg.uk
+      ingressClassName: traefik
 
-    tls:
-    - secretName: grafana-general-tls
+      annotations:
+        external-dns.alpha.kubernetes.io/host: "grafana.funderburg.uk"
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+
+      ## Hostnames.
+      ## Must be provided if Ingress is enable.
+      ##
       hosts:
       - grafana.funderburg.uk
 
-  persistence:
-    enabled: true
-    accessModes:
-      - ReadWriteOnce
-    size: 5Gi
-    finalizers:
-      - kubernetes.io/pvc-protection
+      tls:
+      - secretName: grafana-general-tls
+        hosts:
+        - grafana.funderburg.uk
 
-kubeControllerManager:
-  endpoints: ['192.168.0.51']
+    persistence:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      size: 5Gi
+      finalizers:
+        - kubernetes.io/pvc-protection
 
-kubeEtcd:
-  enabled: false
+  kubeControllerManager:
+    endpoints: ['192.168.0.51']
 
-kubeScheduler:
-  endpoints: ['192.168.0.51']
-  
-kubeProxy:
-  enabled: true
+  kubeEtcd:
+    enabled: false
 
-  endpoints: ['192.168.0.51']
+  kubeScheduler:
+    endpoints: ['192.168.0.51']
 
-prometheus:
-  enabled: true
-
-  ingress:
+  kubeProxy:
     enabled: true
 
-    ingressClassName: traefik
+    endpoints: ['192.168.0.51']
 
-    annotations:
-      external-dns.alpha.kubernetes.io/host: "prometheus.funderburg.uk"
-      cert-manager.io/cluster-issuer: letsencrypt-prod
+  prometheus:
+    enabled: true
 
-    hosts:
-      - prometheus.funderburg.uk
+    ingress:
+      enabled: true
 
-    paths:
-    - /
+      ingressClassName: traefik
 
-    tls:
-    - secretName: prometheus-general-tls
+      annotations:
+        external-dns.alpha.kubernetes.io/host: "prometheus.funderburg.uk"
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+
       hosts:
         - prometheus.funderburg.uk
 
-  ## Settings affecting prometheusSpec
-  ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#prometheusspec
-  ##
-  prometheusSpec:
-    ## Statefulset's persistent volume claim retention policy
-    ## pvcDeleteOnStsDelete and pvcDeleteOnStsScale determine whether
-    ## statefulset's PVCs are deleted (true) or retained (false) on scaling down
-    ## and deleting statefulset, respectively. Requires 1.27.0+.
-    ## Ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
-    persistentVolumeClaimRetentionPolicy:
-      whenDeleted: Retain
-      whenScaled: Retain
+      paths:
+      - /
 
-    ## How long to retain metrics
-    ##
-    retention: 10d
-    ##
-    retentionSize: ""
+      tls:
+      - secretName: prometheus-general-tls
+        hosts:
+          - prometheus.funderburg.uk
 
-    ## Prometheus StorageSpec for persistent data
-    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
+    ## Settings affecting prometheusSpec
+    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#prometheusspec
     ##
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          accessModes: ["ReadWriteOnce"]
-          resources:
-            requests:
-              storage: 50Gi
+    prometheusSpec:
+      ## Statefulset's persistent volume claim retention policy
+      ## pvcDeleteOnStsDelete and pvcDeleteOnStsScale determine whether
+      ## statefulset's PVCs are deleted (true) or retained (false) on scaling down
+      ## and deleting statefulset, respectively. Requires 1.27.0+.
+      ## Ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention
+      persistentVolumeClaimRetentionPolicy:
+        whenDeleted: Retain
+        whenScaled: Retain
 
+      ## How long to retain metrics
+      ##
+      retention: 10d
+      ##
+      retentionSize: ""
+
+      ## Prometheus StorageSpec for persistent data
+      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
+      ##
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 50Gi
