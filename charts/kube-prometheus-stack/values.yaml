@@ -57,6 +57,8 @@ kube-prometheus-stack:
 
     persistence:
       enabled: true
+      type: sts
+      storageClassName: "nfs-local"
       accessModes:
         - ReadWriteOnce
       size: 5Gi
@@ -125,6 +127,7 @@ kube-prometheus-stack:
       storageSpec:
         volumeClaimTemplate:
           spec:
+            storageClassName: nfs-client
             accessModes: ["ReadWriteOnce"]
             resources:
               requests:
