@@ -11,9 +11,9 @@ kube-prometheus-stack:
       enabled: true
       ingressClassName: traefik
 
-      annotations:
-        external-dns.alpha.kubernetes.io/host: "alertmanager.funderburg.uk"
-        cert-manager.io/cluster-issuer: letsencrypt-prod
+      #annotations:
+      #  external-dns.alpha.kubernetes.io/host: "alertmanager.funderburg.uk"
+      #  cert-manager.io/cluster-issuer: letsencrypt-prod
 
       hosts:
       - alertmanager.funderburg.uk
