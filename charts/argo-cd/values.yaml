@@ -43,10 +43,10 @@ argo-cd:
     resources:
       limits:
         cpu: 500m
-        memory: 512Mi
+        memory: 640Mi
       requests:
         cpu: 250m
-        memory: 256Mi
+        memory: 384Mi
   redis:
     resources:
       limits:
