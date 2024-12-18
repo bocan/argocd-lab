@@ -1,3 +1,38 @@
 cert-manager:
   crds:
     enabled: true
+
+  # Resources to provide to the cert-manager webhook pod.
+  #
+  # For example:
+  #  requests:
+  #    cpu: 10m
+  #    memory: 32Mi
+  #
+  # For more information, see [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
+  resources:
+    limits:
+      cpu: 10m
+      memory: 100Mi
+    requests:
+      cpu: 10m
+      memory: 50Mi
+
+  webhook:
+    resources:
+      limits:
+        cpu: 10m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
+
+  cainjector:
+    resources:
+      limits:
+        cpu: 10m
+        memory: 100Mi
+      requests:
+        cpu: 10m
+        memory: 50Mi
+
