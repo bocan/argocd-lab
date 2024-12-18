@@ -20,5 +20,3 @@ external-dns:
     - name: AWS_SHARED_CREDENTIALS_FILE
       value: /.aws/credentials
   logLevel: debug
-
-
