@@ -22,18 +22,13 @@ velero:
         labels:
           severity: warning
 
+  snapshotsEnabled: false
+
   configuration:
     backupStorageLocation:
     - name: default
       provider: replicated.com/nfs
       bucket: velero-backups
-      config:
-        path: /volume/velero
-        server: 192.168.0.51
-    volumeSnapshotLocation:
-    - name: default
-      provider: replicated.com/nfs
-      bucket: velero-snapshots
       config:
         path: /volume/velero
         server: 192.168.0.51
