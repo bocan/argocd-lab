@@ -1,0 +1,19 @@
+---
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: four-daily
+  namespace: velero
+  resourceVersion: "1234105"
+spec:
+  schedule: 5 */6 * * *
+  skipImmediately: false
+  template:
+    csiSnapshotTimeout: 0s
+    hooks: {}
+    includedNamespaces:
+      - '*'
+    itemOperationTimeout: 0s
+    metadata: {}
+    ttl: 360h0m0s
+  useOwnerReferencesInBackup: false
