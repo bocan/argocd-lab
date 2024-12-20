@@ -22,3 +22,11 @@ velero:
         labels:
           severity: warning
 
+  configuration:
+    backupStorageLocation:
+    - name: default
+      provider: replicated.com/nfs
+      bucket: nfs-snapshots
+      config:
+        path: /volume
+        server: 192.168.0.51
