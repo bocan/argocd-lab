@@ -26,7 +26,14 @@ velero:
     backupStorageLocation:
     - name: default
       provider: replicated.com/nfs
-      bucket: nfs-snapshots
+      bucket: velero-backups
+      config:
+        path: /volume
+        server: 192.168.0.51
+    VolumeSnapshotLocation:
+    - name: default
+      provider: replicated.com/nfs
+      bucket: velero-snapshots
       config:
         path: /volume
         server: 192.168.0.51
