@@ -30,6 +30,7 @@ velero:
       config:
         path: /volume
         server: 192.168.0.51
+        VolumeSnapshotLocation
     VolumeSnapshotLocation:
     - name: default
       provider: replicated.com/nfs
