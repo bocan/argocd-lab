@@ -39,8 +39,8 @@ velero:
         server: 192.168.0.51
 
   initContainers:
-    - name: velero-plugin-for-aws
-      image: replicated/local-volume-provider:v0.6.8
+    - name: velero-plugin-for-local
+      image: replicated/local-volume-provider:v0.6.7
       imagePullPolicy: IfNotPresent
       volumeMounts:
         - mountPath: /target
