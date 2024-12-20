@@ -37,3 +37,11 @@ velero:
       config:
         path: /volume
         server: 192.168.0.51
+
+  initContainers:
+    - name: velero-plugin-for-aws
+      image: replicated/local-volume-provider:v0.6.8
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /target
+          name: plugins
