@@ -2,7 +2,7 @@
 apiVersion: velero.io/v1
 kind: Schedule
 metadata:
-  name: four-daily
+  name: fourDaily
   namespace: velero
 spec:
   schedule: 5 */6 * * *
