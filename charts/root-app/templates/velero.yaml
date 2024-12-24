@@ -17,3 +17,11 @@ spec:
     automated:
       selfHeal: true
       prune: true
+  resourceExclusions: |
+    - apiGroups:
+      - velero.io
+      kinds:
+      - Backup
+      - Restore
+      clusters:
+      - "*"
