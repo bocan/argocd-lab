@@ -4,9 +4,6 @@ kind: Schedule
 metadata:
   name: fourdaily
   namespace: velero
-  annotations:
-    argocd.argoproj.io/compare-options: IgnoreExtraneous
-    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   schedule: 5 */6 * * *
   skipImmediately: false
@@ -16,6 +13,9 @@ spec:
     includedNamespaces:
       - '*'
     itemOperationTimeout: 0s
-    metadata: {}
+    metadata:
+      annotations:
+        argocd.argoproj.io/compare-options: IgnoreExtraneous
+        argocd.argoproj.io/sync-options: Delete=false,Prune=false
     ttl: 360h0m0s
   useOwnerReferencesInBackup: false
