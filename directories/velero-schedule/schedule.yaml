@@ -4,6 +4,9 @@ kind: Schedule
 metadata:
   name: fourdaily
   namespace: velero
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   schedule: 5 */6 * * *
   skipImmediately: false
@@ -16,11 +19,3 @@ spec:
     metadata: {}
     ttl: 360h0m0s
   useOwnerReferencesInBackup: false
-  resourceExclusions: |
-    - apiGroups:
-      - velero.io
-      kinds:
-      - Backup
-      - Restore
-      clusters:
-      - "*"
