@@ -41,6 +41,15 @@ kube-prometheus-stack:
 
   grafana:
 
+    grafana.ini:
+      smtp:
+        enabled: true
+        host: email-smtp.eu-west-2.amazonaws.com:587
+        existingSecret: "aws-smtp-credentials"
+        from_address: chris@funderburg.me
+        passwordKey: "password"
+        userKey: "user"
+
     adminPassword: prom-operator
 
     ingress:
