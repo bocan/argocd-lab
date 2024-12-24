@@ -16,3 +16,11 @@ spec:
     metadata: {}
     ttl: 360h0m0s
   useOwnerReferencesInBackup: false
+  resourceExclusions: |
+    - apiGroups:
+      - velero.io
+      kinds:
+      - Backup
+      - Restore
+      clusters:
+      - "*"
