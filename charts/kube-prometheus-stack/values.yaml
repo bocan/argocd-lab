@@ -46,6 +46,7 @@ kube-prometheus-stack:
         enabled: true
         host: email-smtp.eu-west-2.amazonaws.com:587
         existingSecret: "aws-smtp-credentials"
+        startTLS_policy: MandatoryStartTLS
         from_address: chris@funderburg.me
         passwordKey: "password"
         userKey: "user"
