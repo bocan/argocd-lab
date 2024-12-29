@@ -9,17 +9,12 @@ keycloak:
     enabled: true
     ingressClassName: "traefik"
     hostname: keycloak.funderburg.uk
-    servicePort: https
+    servicePort: http
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       external-dns.alpha.kubernetes.io/host: "keycloak.funderburg.uk"
 
     tls: true
-
-    extraTls:
-    - hosts:
-        - keycloak.funderburg.uk
-      secretName: keycloak.local-tls
 
   metrics:
     enabled: true
