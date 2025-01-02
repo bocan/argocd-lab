@@ -13,8 +13,6 @@ keycloak:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       external-dns.alpha.kubernetes.io/host: "keycloak.funderburg.uk"
-      ingress.kubernetes.io/custom-request-headers: "X-Forwarded-Proto1: https"
-      traefik.ingress.kubernetes.io/custom-response-headers: "X-Forwarded-Proto2: https"
 
     tls: true
 
