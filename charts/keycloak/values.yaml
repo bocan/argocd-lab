@@ -1,5 +1,7 @@
 keycloak:
 
+  production: true
+
   postgresql:
     auth:
       postgresPassword: "password"
