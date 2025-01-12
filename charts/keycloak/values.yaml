@@ -29,7 +29,8 @@ keycloak:
     prometheusRule:
       enabled: true
       namespace: "monitoring"
-      labels: {}
+      labels:
+        release: kube-prometheus-stack
       groups:
         - name: Keycloak
           rules:
