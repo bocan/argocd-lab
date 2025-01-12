@@ -2,6 +2,8 @@ velero:
   metrics:
     serviceMonitor:
       enabled: true
+      labels:
+        release: kube-prometheus-stack
     prometheusRule:
       enabled: true
       spec:
