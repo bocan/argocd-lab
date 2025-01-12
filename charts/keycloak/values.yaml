@@ -29,7 +29,7 @@ keycloak:
       endpoints:
         - path: '{{ include "keycloak.httpPath" . }}metrics'
           scheme: https
-          port: 9000
+          port: metrics
         - path: '{{ include "keycloak.httpPath" . }}realms/{{ .Values.adminRealm }}/metrics'
           port: http
       labels:
