@@ -26,7 +26,10 @@ keycloak:
     enabled: true
     serviceMonitor:
       enabled: true
-      scheme: https
+      endpoints:
+        - path: '{{ include "keycloak.httpPath" . }}metrics'
+        - path: '{{ include "keycloak.httpPath" . }}realms/{{ .Values.adminRealm }}/metrics'
+          port: http
       labels:
         release: kube-prometheus-stack
     prometheusRule:
