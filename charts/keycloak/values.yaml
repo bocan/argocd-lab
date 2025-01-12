@@ -31,7 +31,7 @@ keycloak:
           scheme: https
           port: metrics
           tlsConfig:
-            insecure_skip_verify: true
+            insecureSkipVerify: true
         - path: '{{ include "keycloak.httpPath" . }}realms/{{ .Values.adminRealm }}/metrics'
           port: http
       labels:
