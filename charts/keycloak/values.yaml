@@ -26,7 +26,6 @@ keycloak:
     enabled: true
     serviceMonitor:
       enabled: true
-      namespace: monitoring
       labels:
         Release: kube-prometheus-stack
     prometheusRule:
