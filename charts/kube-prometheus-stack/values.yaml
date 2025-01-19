@@ -59,20 +59,21 @@ kube-prometheus-stack:
       auth.generic_oauth:
         enabled: true
         name: KEYCLOAK  # this will be the oidc button name  
+        use_refresh_token: true
         allow_sign_up: true
         client_id: grafana  # this is your grafana client name on keycloak 
         client_secret: Tx91MSLMXiqOjakUSClcTJLZROU0oRQx
-        scopes: openid profile email roles # should match with keycloak client scope setting 
+        scopes: openid email profile offline_access roles
         auth_url: https://keycloak.funderburg.uk/realms/home/protocol/openid-connect/auth
         token_url: https://keycloak.funderburg.uk/realms/home/protocol/openid-connect/token
         api_url: https://keycloak.funderburg.uk/realms/home/protocol/openid-connect/userinfo
-        signout_redirect_url: https://keycloakfunderburg.uk/realms/home/protocol/openid-connect/logout
+        signout_redirect_url: https://keycloak.funderburg.uk/realms/home/protocol/openid-connect/logout
         role_attribute_strict: true
         role_attribute_path:  (contains(grafana.roles[], 'grafanaAdmin') && 'GrafanaAdmin') || (contains(grafana.roles[], 'admin') && 'Admin') || (contains(grafana.roles[], 'editor') && 'Editor') || 'Viewer'
         allow_assign_grafana_admin: true  # enable grafanaAdmin login through Keycloak
         email_attribute_path: email # from values from token
-        name_attribute_path: preferred_username  # from values from token
-        login_attribute_path: preferred_username # email or preferred_username or something from tokens
+        name_attribute_path: full_name  # from values from token
+        login_attribute_path: username # email or preferred_username or something from tokens
       auth:
         disable_login_form: false 
         oauth_auto_login: false 
