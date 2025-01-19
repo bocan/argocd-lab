@@ -41,6 +41,8 @@ kube-prometheus-stack:
 
   grafana:
 
+    assertNoLeakedSecrets: false
+
     smtp:
         existingSecret: "aws-smtp-credentials"
         userKey: "user"
