@@ -71,7 +71,7 @@ kube-prometheus-stack:
         api_url: https://keycloak.funderburg.uk/realms/home/protocol/openid-connect/userinfo
         signout_redirect_url: https://keycloak.funderburg.uk/realms/home/protocol/openid-connect/logout
         role_attribute_strict: true
-        role_attribute_path:  (contains(grafana.roles[], 'grafanaAdmin') && 'GrafanaAdmin') || (contains(grafana.roles[], 'admin') && 'Admin') || (contains(grafana.roles[], 'editor') && 'Editor') || 'Viewer'
+        role_attribute_path: (contains(resource_access.grafana-oauth.roles[*], 'admin') && 'Admin') || (contains(resource_access.grafana-oauth.roles[*], 'editor') && 'Editor') || 'Viewer'
         allow_assign_grafana_admin: true  # enable grafanaAdmin login through Keycloak
         email_attribute_path: email # from values from token
         name_attribute_path: full_name  # from values from token
