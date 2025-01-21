@@ -48,6 +48,8 @@ kube-prometheus-stack:
         userKey: "user"
         passwordKey: "password"
 
+    envFromSecret: grafana-env-secret
+
     grafana.ini:
       smtp:
         enabled: true
@@ -63,7 +65,8 @@ kube-prometheus-stack:
         name: KEYCLOAK  # this will be the oidc button name  
         use_refresh_token: true
         allow_sign_up: true
-        client_id: grafana  # this is your grafana client name on keycloak 
+        client_id:
+        client_secret:
         use_pkce: true
         scopes: openid email profile offline_access roles
         auth_url: https://keycloak.funderburg.uk/realms/home/protocol/openid-connect/auth
