@@ -53,5 +53,3 @@ keycloak:
               for: 5m
               labels:
                 severity: critical
-
-

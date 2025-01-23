@@ -62,7 +62,7 @@ kube-prometheus-stack:
         root_url: https://grafana.funderburg.uk/
       auth.generic_oauth:
         enabled: true
-        name: KEYCLOAK  # this will be the oidc button name  
+        name: KEYCLOAK  # this will be the oidc button name
         use_refresh_token: true
         allow_sign_up: true
         client_id:
@@ -80,10 +80,10 @@ kube-prometheus-stack:
         name_attribute_path: full_name  # from values from token
         login_attribute_path: username # email or preferred_username or something from tokens
       auth:
-        disable_login_form: false 
-        oauth_auto_login: false 
-        oauth_skip_org_role_update_sync: false  
-        skip_org_role_sync: false  
+        disable_login_form: false
+        oauth_auto_login: false
+        oauth_skip_org_role_update_sync: false
+        skip_org_role_sync: false
       users:
         auto_assign_org: true
         auto_assign_org_role: Viewer  # default org_role

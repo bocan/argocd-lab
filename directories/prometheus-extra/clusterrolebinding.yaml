@@ -8,5 +8,5 @@ roleRef:
   name: prometheus-read-all-servicemonitors
 subjects:
 - kind: ServiceAccount
-  name: prometheus 
-  namespace: monitoring 
+  name: prometheus
+  namespace: monitoring
