@@ -37,7 +37,7 @@ velero:
 
   initContainers:
     - name: velero-plugin-for-local
-      image: replicated/local-volume-provider:v0.6.7
+      image: replicated/local-volume-provider:0.6.9
       imagePullPolicy: IfNotPresent
       volumeMounts:
         - mountPath: /target
