@@ -3,6 +3,6 @@ name: cert-manager
 version: 1.0.0
 dependencies:
   - name: cert-manager
-    version: 1.17.1
+    version: v1.17.2
     repository: https://charts.jetstack.io
     namespace: cert-manager
