@@ -7,22 +7,8 @@ descheduler:
   # CronJob or Deployment
   kind: CronJob
 
-  # timeZone: Etc/UTC
-
   # deschedulerPolicy contains the policies the descheduler will execute.
   deschedulerPolicy:
-    # nodeSelector: "key1=value1,key2=value2"
-    # maxNoOfPodsToEvictPerNode: 10
-    # maxNoOfPodsToEvictPerNamespace: 10
-    # metricsProviders:
-    # - source: KubernetesMetrics
-    # tracing:
-    #   collectorEndpoint: otel-collector.observability.svc.cluster.local:4317
-    #   transportCert: ""
-    #   serviceName: ""
-    #   serviceNamespace: ""
-    #   sampleRate: 1.0
-    #   fallbackToNoOpProviderOnError: true
     profiles:
       - name: default
         pluginConfig:
@@ -64,30 +50,4 @@ descheduler:
               - RemovePodsViolatingNodeTaints
               - RemovePodsViolatingNodeAffinity
               - RemovePodsViolatingInterPodAntiAffinity
-
-  nodeSelector: {}
-  #  foo: bar
-
-  serviceMonitor:
-    enabled: false
-    # The namespace where Prometheus expects to find service monitors.
-    # namespace: ""
-    # Add custom labels to the ServiceMonitor resource
-    additionalLabels: {}
-      # prometheus: kube-prometheus-stack
-    interval: ""
-    # honorLabels: true
-    insecureSkipVerify: true
-    serverName: null
-    metricRelabelings: []
-      # - action: keep
-      #   regex: 'descheduler_(build_info|pods_evicted)'
-      #   sourceLabels: [__name__]
-    relabelings: []
-      # - sourceLabels: [__meta_kubernetes_pod_node_name]
-      #   separator: ;
-      #   regex: ^(.*)$
-      #   targetLabel: nodename
-      #   replacement: $1
-      #   action: replace
 
