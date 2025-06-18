@@ -3,6 +3,6 @@ name: ingress-nginx
 version: 1.0.0
 dependencies:
   - name: ingress-nginx
-    version: 1.12.2
+    version: 4.12.3
     repository: https://kubernetes.github.io/ingress-nginx
     namespace: ingress-nginx
