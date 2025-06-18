@@ -9,6 +9,8 @@ external-dns:
     - name: aws-credentials
       mountPath: /.aws
       readOnly: true
+  extraArgs:
+    - --annotation-filter=external-dns.alpha.kubernetes.io/exclude notin (true)
   domainFilters: ["funderburg.uk"]
   sources:
     - ingress
