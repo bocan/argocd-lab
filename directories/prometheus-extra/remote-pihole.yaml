@@ -24,6 +24,8 @@ addressType: IPv4 # Or IPv6, FQDN depending on your addresses
 endpoints:
   - addresses:
       - 192.168.0.2
+    conditions:
+      ready: true  
 ports:
   - name: metrics
     port: 9100
@@ -74,6 +76,8 @@ addressType: IPv4 # Or IPv6, FQDN depending on your addresses
 endpoints:
   - addresses:
       - 192.168.0.10
+    conditions:
+      ready: true  
 ports:
   - name: metrics
     port: 9100
@@ -124,6 +128,8 @@ addressType: IPv4 # Or IPv6, FQDN depending on your addresses
 endpoints:
   - addresses:
       - 35.177.81.185
+    conditions:
+      ready: true  
 ports:
   - name: metrics
     port: 9100
@@ -174,6 +180,8 @@ addressType: IPv4 # Or IPv6, FQDN depending on your addresses
 endpoints:
   - addresses:
       - 3.8.9.103
+    conditions:
+      ready: true  
 ports:
   - name: metrics
     port: 9100
