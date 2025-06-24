@@ -13,23 +13,18 @@ spec:
       protocol: TCP
       targetPort: 9100
 ---
-apiVersion: discovery.k8s.io/v1
-kind: EndpointSlice
+apiVersion: v1
+kind: Endpoints
 metadata:
   name: external-pihole
   namespace: monitoring
-  labels:
-    kubernetes.io/service-name: external-pihole # Important: Link to the Service (if one exists)
-addressType: IPv4 # Or IPv6, FQDN depending on your addresses
-endpoints:
+subsets:
   - addresses:
-      - 192.168.0.2
-    conditions:
-      ready: true  
-ports:
-  - name: metrics
-    port: 9100
-    protocol: TCP
+    - ip: 192.168.0.2
+    ports:
+      - name: metrics
+        port: 9100
+        protocol: TCP
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -65,23 +60,18 @@ spec:
       protocol: TCP
       targetPort: 9100
 ---
-apiVersion: discovery.k8s.io/v1
-kind: EndpointSlice
+apiVersion: v1
+kind: Endpoints
 metadata:
   name: external-yoga
   namespace: monitoring
-  labels:
-    kubernetes.io/service-name: external-yoga # Important: Link to the Service (if one exists)
-addressType: IPv4 # Or IPv6, FQDN depending on your addresses
-endpoints:
+subsets:
   - addresses:
-      - 192.168.0.10
-    conditions:
-      ready: true  
-ports:
-  - name: metrics
-    port: 9100
-    protocol: TCP
+    - ip: 192.168.0.10
+    ports:
+      - name: metrics
+        port: 9100
+        protocol: TCP
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -117,23 +107,18 @@ spec:
       protocol: TCP
       targetPort: 9100
 ---
-apiVersion: discovery.k8s.io/v1
-kind: EndpointSlice
+apiVersion: v1
+kind: Endpoints
 metadata:
   name: external-odin
   namespace: monitoring
-  labels:
-    kubernetes.io/service-name: external-odin # Important: Link to the Service (if one exists)
-addressType: IPv4 # Or IPv6, FQDN depending on your addresses
-endpoints:
+subsets:
   - addresses:
-      - 35.177.81.185
-    conditions:
-      ready: true  
-ports:
-  - name: metrics
-    port: 9100
-    protocol: TCP
+    - ip: 35.177.81.185
+    ports:
+      - name: metrics
+        port: 9100
+        protocol: TCP
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -169,23 +154,18 @@ spec:
       protocol: TCP
       targetPort: 9100
 ---
-apiVersion: discovery.k8s.io/v1
-kind: EndpointSlice
+apiVersion: v1
+kind: Endpoints
 metadata:
   name: external-freya
   namespace: monitoring
-  labels:
-    kubernetes.io/service-name: external-freya # Important: Link to the Service (if one exists)
-addressType: IPv4 # Or IPv6, FQDN depending on your addresses
-endpoints:
+subsets:
   - addresses:
-      - 3.8.9.103
-    conditions:
-      ready: true  
-ports:
-  - name: metrics
-    port: 9100
-    protocol: TCP
+    - ip: 3.8.9.103
+    ports:
+      - name: metrics
+        port: 9100
+        protocol: TCP
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -206,3 +186,36 @@ spec:
   namespaceSelector:
     matchNames:
       - monitoring
+
+
+
+
+
+
+
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: external-pihole
+  namespace: monitoring
+subsets:
+  - addresses:
+    - ip: 192.168.0.2
+    ports:
+      - name: metrics
+        port: 9100
+        protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: external-yoga
+  namespace: monitoring
+subsets:
+  - addresses:
+    - ip: 192.168.0.10
+    ports:
+      - name: metrics
+        port: 9100
+        protocol: TCP
