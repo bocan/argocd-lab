@@ -7,29 +7,24 @@ metadata:
   labels:
     app: external-pihole
 spec:
-  clusterIP: None
   ports:
     - name: metrics
       port: 9100
       protocol: TCP
       targetPort: 9100
 ---
-apiVersion: discovery.k8s.io/v1
-kind: EndpointSlice
+apiVersion: v1
+kind: Endpoints
 metadata:
   name: external-pihole
   namespace: monitoring
-  labels:
-    kubernetes.io/service-name: external-pihole
-addressType: IPv4
-ports:
-  - name: metrics
-    port: 9100
-endpoints:
+subsets:
   - addresses:
-      - 192.168.0.2
-  - conditions:
-      - ready: true
+    - ip: 192.168.0.2
+    ports:
+      - name: metrics
+        port: 9100
+        protocol: TCP
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -42,7 +37,7 @@ metadata:
 spec:
   endpoints:
     - port: metrics
-      interval: 30s
+      interval: 3s
       path: /metrics
   selector:
     matchLabels:
@@ -59,29 +54,24 @@ metadata:
   labels:
     app: external-yoga
 spec:
-  clusterIP: None
   ports:
     - name: metrics
       port: 9100
       protocol: TCP
       targetPort: 9100
 ---
-apiVersion: discovery.k8s.io/v1
-kind: EndpointSlice
+apiVersion: v1
+kind: Endpoints
 metadata:
   name: external-yoga
   namespace: monitoring
-  labels:
-    kubernetes.io/service-name: external-yoga
-addressType: IPv4
-ports:
-  - name: metrics
-    port: 9100
-endpoints:
+subsets:
   - addresses:
-      - 192.168.0.10
-  - conditions:
-      - ready: true
+    - ip: 192.168.0.10
+    ports:
+      - name: metrics
+        port: 9100
+        protocol: TCP
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -94,7 +84,7 @@ metadata:
 spec:
   endpoints:
     - port: metrics
-      interval: 30s
+      interval: 3s
       path: /metrics
   selector:
     matchLabels:
@@ -111,29 +101,24 @@ metadata:
   labels:
     app: external-odin
 spec:
-  clusterIP: None
   ports:
     - name: metrics
       port: 9100
       protocol: TCP
       targetPort: 9100
 ---
-apiVersion: discovery.k8s.io/v1
-kind: EndpointSlice
+apiVersion: v1
+kind: Endpoints
 metadata:
   name: external-odin
   namespace: monitoring
-  labels:
-    kubernetes.io/service-name: external-odin
-addressType: IPv4
-ports:
-  - name: metrics
-    port: 9100
-endpoints:
+subsets:
   - addresses:
-      - 35.177.81.185
-  - conditions:
-      - ready: true
+    - ip: 35.177.81.185
+    ports:
+      - name: metrics
+        port: 9100
+        protocol: TCP
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -146,7 +131,7 @@ metadata:
 spec:
   endpoints:
     - port: metrics
-      interval: 30s
+      interval: 3s
       path: /metrics
   selector:
     matchLabels:
@@ -163,29 +148,24 @@ metadata:
   labels:
     app: external-freya
 spec:
-  clusterIP: None
   ports:
     - name: metrics
       port: 9100
       protocol: TCP
       targetPort: 9100
 ---
-apiVersion: discovery.k8s.io/v1
-kind: EndpointSlice
+apiVersion: v1
+kind: Endpoints
 metadata:
   name: external-freya
   namespace: monitoring
-  labels:
-    kubernetes.io/service-name: external-freya
-addressType: IPv4
-ports:
-  - name: metrics
-    port: 9100
-endpoints:
+subsets:
   - addresses:
-      - 3.8.9.103
-  - conditions:
-      - ready: true
+    - ip: 3.8.9.103
+    ports:
+      - name: metrics
+        port: 9100
+        protocol: TCP
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -198,7 +178,7 @@ metadata:
 spec:
   endpoints:
     - port: metrics
-      interval: 30s
+      interval: 3s
       path: /metrics
   selector:
     matchLabels:
@@ -206,4 +186,21 @@ spec:
   namespaceSelector:
     matchNames:
       - monitoring
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: remote-node-exporter
+  namespace: monitoring
+  labels:
+    app: remote-node-exporter
+spec:
+  clusterIP: None  # Headless service to enable custom EndpointSlices
+  ports:
+    - port: 9100
+      name: metrics
+
 
