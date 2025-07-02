@@ -3,6 +3,6 @@ name: loki
 version: 1.0.0
 dependencies:
   - name: grafana-loki
-    version: 5.0.1
+    version: 5.0.3
     repository: oci://registry-1.docker.io/bitnamicharts
     namespace: monitoring
