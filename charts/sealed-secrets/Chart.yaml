@@ -5,4 +5,3 @@ dependencies:
   - name: sealed-secrets
     version: 2.5.17
     repository: oci://registry-1.docker.io/bitnamicharts
-    namespace: sealed-secrets

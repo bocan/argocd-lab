@@ -1,0 +1,176 @@
+harbor:
+  expose:
+    type: ingress
+    tls:
+      enabled: true
+      # 1) auto: generate the tls certificate automatically
+      # 2) secret: read the tls certificate from the specified secret.
+      # The tls certificate can be generated manually or by cert manager
+      # 3) none: configure no tls certificate for the ingress. If the default
+      # tls certificate is configured in the ingress controller, choose this option
+      certSource: auto
+      auto:
+        commonName: "harbor.funderburg.uk"
+      secret:
+        # The name of secret which contains keys named:
+        # "tls.crt" - the certificate
+        # "tls.key" - the private key
+        secretName: ""
+    ingress:
+      hosts:
+        core: harbor.funderburg.uk
+      className: "traefik"
+      annotations:
+        external-dns.alpha.kubernetes.io/host: "argocd.funderburg.uk"
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+  
+  externalURL: https://harbor.funderburg.uk
+  
+  # The persistence is enabled by default and a default StorageClass
+  # is needed in the k8s cluster to provision volumes dynamically.
+  #
+  # For storing images and charts, you can also use "azure", "gcs", "s3",
+  # "swift" or "oss". Set it in the "imageChartStorage" section
+  persistence:
+    enabled: true
+    # Setting it to "keep" to avoid removing PVCs during a helm delete
+    # operation. Leaving it empty will delete PVCs after the chart deleted
+    # (this does not apply for PVCs that are created for internal database
+    # and redis components, i.e. they are never deleted automatically)
+    resourcePolicy: "keep"
+    persistentVolumeClaim:
+      registry:
+        # Use the existing PVC which must be created manually before bound,
+        # and specify the "subPath" if the PVC is shared with other components
+        existingClaim: ""
+        storageClass: "nfs-client"
+        size: 10Gi
+      jobservice:
+        jobLog:
+          existingClaim: ""
+          storageClass: "nfs-client"
+      # If external database is used, the following settings for database will
+      # be ignored
+      database:
+        storageClass: "nfs-client"
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        annotations: {}
+      # If external Redis is used, the following settings for Redis will
+      # be ignored
+      redis:
+        existingClaim: ""
+        storageClass: ""
+        subPath: ""
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        annotations: {}
+      trivy:
+        existingClaim: ""
+        storageClass: ""
+        subPath: ""
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        annotations: {}
+    # Define which storage backend is used for registry to store
+    # images and charts. Refer to
+    # https://github.com/distribution/distribution/blob/release/2.8/docs/configuration.md#storage
+    # for the detail.
+    imageChartStorage:
+      type: filesystem
+      filesystem:
+        rootdirectory: /storage
+  
+  # The initial password of Harbor admin. Change it from portal after launching Harbor
+  # or give an existing secret for it
+  # key in secret is given via (default to HARBOR_ADMIN_PASSWORD)
+  # existingSecretAdminPassword:
+  harborAdminPassword: "Harbor12345"
+  
+  ipFamily:
+    # ipv6Enabled set to true if ipv6 is enabled in cluster, currently it affected the nginx related component
+    ipv6:
+      enabled: false
+  
+  # The secret key used for encryption. Must be a string of 16 chars.
+  secretKey: "jhfhe75hd734gatvgiehxd9bhs"
+  
+  metrics:
+    enabled: true
+
+    ## Create prometheus serviceMonitor to scrape harbor metrics.
+    ## This requires the monitoring.coreos.com/v1 CRD. Please see
+    ## https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/getting-started.md
+    ##
+    serviceMonitor:
+      enabled: true
+      additionalLabels: {}
+  
+  portal:
+    image:
+      repository: goharbor/harbor-portal
+      tag: v2.13.2
+  
+  core:
+    image:
+      repository: goharbor/harbor-core
+      tag: v2.13.2
+
+  jobservice:
+    image:
+      repository: goharbor/harbor-jobservice
+      tag: v2.13.2
+  
+  registry:
+    registry:
+      image:
+        repository: goharbor/registry-photon
+        tag: v2.13.2
+      # resources:
+      #  requests:
+      #    memory: 256Mi
+      #    cpu: 100m
+    controller:
+      image:
+        repository: goharbor/harbor-registryctl
+        tag: v2.13.2
+      # resources:
+      #  requests:
+      #    memory: 256Mi
+      #    cpu: 100m
+ 
+  trivy:
+    # enabled the flag to enable Trivy scanner
+    enabled: true
+    image:
+      # repository the repository for Trivy adapter image
+      repository: goharbor/trivy-adapter-photon
+      # tag the tag for Trivy adapter image
+      tag: v2.13.2
+
+  database:
+    # if external database is used, set "type" to "external"
+    # and fill the connection information in "external" section
+    type: internal
+    internal:
+      image:
+        repository: goharbor/harbor-db
+        tag: v2.13.2
+
+      password: "m1dland"
+
+  redis:
+    # if external Redis is used, set "type" to "external"
+    # and fill the connection information in "external" section
+    type: internal
+    internal:
+      image:
+        repository: goharbor/redis-photon
+        tag: v2.13.2
+
+  exporter:
+    image:
+      repository: goharbor/harbor-exporter
+      tag: v2.13.2
+
+  
