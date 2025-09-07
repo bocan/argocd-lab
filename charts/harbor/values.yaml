@@ -55,23 +55,20 @@ harbor:
         storageClass: "nfs-client"
         accessMode: ReadWriteOnce
         size: 1Gi
-        annotations: {}
       # If external Redis is used, the following settings for Redis will
       # be ignored
       redis:
         existingClaim: ""
-        storageClass: ""
+        storageClass: "nfs-client"
         subPath: ""
         accessMode: ReadWriteOnce
         size: 1Gi
-        annotations: {}
       trivy:
         existingClaim: ""
-        storageClass: ""
+        storageClass: "nfs-client"
         subPath: ""
         accessMode: ReadWriteOnce
         size: 5Gi
-        annotations: {}
     # Define which storage backend is used for registry to store
     # images and charts. Refer to
     # https://github.com/distribution/distribution/blob/release/2.8/docs/configuration.md#storage
@@ -93,7 +90,7 @@ harbor:
       enabled: false
   
   # The secret key used for encryption. Must be a string of 16 chars.
-  secretKey: "jhfhe75hd734gatvgiehxd9bhs"
+  secretKey: "jhFhe75hx734gatv"
   
   metrics:
     enabled: true
@@ -104,8 +101,9 @@ harbor:
     ##
     serviceMonitor:
       enabled: true
-      additionalLabels: {}
-  
+      additionalLabels:
+        release: kube-prometheus-stack
+
   portal:
     image:
       repository: goharbor/harbor-portal
