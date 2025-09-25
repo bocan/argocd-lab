@@ -1,6 +1,6 @@
 postgresql:
   postgres:
-s    image:
+    image:
       repository: postgres
       tag: "17"
       pullPolicy: IfNotPresent
