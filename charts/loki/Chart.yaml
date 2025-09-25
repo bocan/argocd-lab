@@ -2,6 +2,6 @@ apiVersion: v2
 name: loki
 version: 1.0.0
 dependencies:
-  - name: grafana-loki
-    version: 6.0.6
-    repository: oci://registry-1.docker.io/bitnamicharts
+  - name: loki
+    version: 6.41.0
+    repository: https://grafana.github.io/helm-charts
