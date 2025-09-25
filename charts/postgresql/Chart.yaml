@@ -1,0 +1,7 @@
+apiVersion: v2
+name: postgresql
+version: 1.0.0
+dependencies:
+  - name: postgres
+    version: 1.5.8
+    repository: https://groundhog2k.github.io/helm-charts

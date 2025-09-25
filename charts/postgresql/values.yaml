@@ -1,0 +1,31 @@
+postgresql:
+  postgres:
+s    image:
+      repository: postgres
+      tag: "17"
+      pullPolicy: IfNotPresent
+
+    # --- credentials & db bootstrap ---
+    # (you can source these from a Secret via values if you prefer)
+    auth:
+      superuserPassword: "m1dland"
+
+    # --- persistence ---
+    persistence:
+      enabled: true
+      size: 20Gi
+      storageClass: nfs-client
+
+    # --- networking ---
+    service:
+      type: ClusterIP
+      port: 5432
+
+    # --- resources (tune later) ---
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
