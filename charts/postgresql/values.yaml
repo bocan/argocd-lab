@@ -5,10 +5,12 @@ postgresql:
       tag: "17"
       pullPolicy: IfNotPresent
 
-    # --- credentials & db bootstrap ---
-    # (you can source these from a Secret via values if you prefer)
-    auth:
-      superuserPassword: "m1dland"
+    env:
+      - name: POSTGRES_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: pg-superuser
+            key: POSTGRES_PASSWORD
 
     # --- persistence ---
     persistence:
