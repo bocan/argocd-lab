@@ -5,12 +5,10 @@ postgresql:
       tag: "17"
       pullPolicy: IfNotPresent
 
-    env:
-      - name: POSTGRES_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: pg-superuser
-            key: POSTGRES_PASSWORD
+    settings:
+      superuserPassword:
+        existingSecret: pg-superuser
+        secretKey: POSTGRES_PASSWORD
 
     # --- persistence ---
     persistence:
