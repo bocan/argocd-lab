@@ -10,10 +10,12 @@ postgres:
     tag: "17"
 
   # --- persistence ---
-  persistence:
-    enabled: true
-    size: 20Gi
-    storageClass: nfs-client
+  storage:
+    #persistentVolumeClaimName:
+    volumeName: "postgres-data"
+    requestedSize: 20Gi
+    className: nfs-client
+    keepPvc: true
 
   # --- networking ---
   service:
