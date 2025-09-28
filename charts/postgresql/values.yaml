@@ -1,31 +1,30 @@
-postgresql:
-  postgres:
-    image:
-      repository: postgres
-      tag: "17"
-      pullPolicy: IfNotPresent
+postgres:
+  settings:
+    existingSecret: "pg-superuser"
+    superuser:
+      secretKey: POSTGRES_USER
+    superuserPassword:
+      secretKey: POSTGRES_PASSWORD
+  image:
+    repository: postgres
+    tag: "17"
 
-    settings:
-      superuserPassword:
-        existingSecret: pg-superuser
-        secretKey: POSTGRES_PASSWORD
+  # --- persistence ---
+  persistence:
+    enabled: true
+    size: 20Gi
+    storageClass: nfs-client
 
-    # --- persistence ---
-    persistence:
-      enabled: true
-      size: 20Gi
-      storageClass: nfs-client
+  # --- networking ---
+  service:
+    type: ClusterIP
+    port: 5432
 
-    # --- networking ---
-    service:
-      type: ClusterIP
-      port: 5432
-
-    # --- resources (tune later) ---
-    resources:
-      requests:
-        cpu: 250m
-        memory: 512Mi
-      limits:
-        cpu: 500m
-        memory: 1Gi
+  # --- resources (tune later) ---
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
