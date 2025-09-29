@@ -39,11 +39,11 @@ keycloakx:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       external-dns.alpha.kubernetes.io/host: "keycloak.funderburg.uk"
     rules:
-      hosts:
-        - host: keycloak.funderburg.uk
-          paths:
-            - path: /
-              pathType: Prefix
+      - host: keycloak.funderburg.uk
+        paths:
+          - path: /
+            pathType: Prefix
+
     tls:
       - hosts:
           - keycloak.funderburg.uk
