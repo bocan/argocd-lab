@@ -1,12 +1,10 @@
 keycloakx:
-  # Use upstream multi-arch image (arm64 works)
-  image:
-    repository: quay.io/keycloak/keycloak
-    tag: "26.3.3" # pick/lock your KC version
-    pullPolicy: IfNotPresent
 
-  replicas: 1
-  resources: {} # add limits/requests later
+  image:
+    # The Keycloak image repository
+    repository: quay.io/keycloak/keycloak
+    # Overrides the Keycloak image tag whose default is the chart appVersion
+    tag: "26.3.3"
 
   # Keycloak runtime flags / env
   extraEnv: |
@@ -17,9 +15,37 @@ keycloakx:
     - name: KC_METRICS_ENABLED
       value: "true"
 
-  # External Postgres (recommended to avoid Bitnami deps)
-  postgresql:
-    enabled: false
+  # Pod resource requests and limits
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1024Mi"
+    limits:
+      cpu: "500m"
+      memory: "1024Mi"
+
+  ingress:
+    # If `true`, an Ingress is created
+    enabled: true
+    # The name of the Ingress Class associated with this ingress
+    ingressClassName: "traefik"
+    annotations: {}
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/host: "keycloak.funderburg.uk"
+
+    rules:
+      -
+        # Ingress host
+        host: 'keycloak.funderburg.uk'
+        # Paths for the host
+        paths:
+          - path: '/'
+            pathType: Prefix
+    # TLS configuration
+    tls:
+      - hosts:
+          - keycloak.funderburg.uk
+        secretName: "keycloak-cert"
 
   database:
     # Supply your own Service/Secret or external endpoint
@@ -31,38 +57,26 @@ keycloakx:
     username: keycloak
     database: keycloak
 
-  # TLS: let cert-manager handle it via Ingress
-  ingress:
+  proxy:
     enabled: true
-    ingressClassName: traefik
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      external-dns.alpha.kubernetes.io/host: "keycloak.funderburg.uk"
-    rules:
-      - host: keycloak.funderburg.uk
-        paths:
-          - path: /
-            pathType: Prefix
+    mode: forwarded
+    http:
+      enabled: true
 
-    tls:
-      - hosts:
-          - keycloak.funderburg.uk
-        secretName: keycloak-cert
-
-  # Metrics + ServiceMonitor (Prometheus Operator)
   metrics:
     enabled: true
 
+  health:
+    enabled: true
+
+  http:
+    # For backwards compatibility reasons we set this to the value used by previous Keycloak versions.
+    relativePath: "/auth"
+    internalPort: http-internal
+    internalScheme: HTTP
+
   serviceMonitor:
     enabled: true
-    endpoints:
-      - port: http
-        path: /metrics
-        scheme: https
-        tlsConfig:
-          insecureSkipVerify: true
     labels:
       release: kube-prometheus-stack
-    # prometheusRule:
-    #   enabled: true
-    #   groups: []    # you can port your alert rules later
+
