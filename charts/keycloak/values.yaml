@@ -1,5 +1,4 @@
 keycloakx:
-
   image:
     # The Keycloak image repository
     repository: quay.io/keycloak/keycloak
@@ -29,17 +28,16 @@ keycloakx:
     enabled: true
     # The name of the Ingress Class associated with this ingress
     ingressClassName: "traefik"
-    annotations: {}
+    annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       external-dns.alpha.kubernetes.io/host: "keycloak.funderburg.uk"
 
     rules:
-      -
-        # Ingress host
-        host: 'keycloak.funderburg.uk'
+      - # Ingress host
+        host: "keycloak.funderburg.uk"
         # Paths for the host
         paths:
-          - path: '/'
+          - path: "/"
             pathType: Prefix
     # TLS configuration
     tls:
@@ -79,4 +77,3 @@ keycloakx:
     enabled: true
     labels:
       release: kube-prometheus-stack
-
