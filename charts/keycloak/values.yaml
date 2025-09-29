@@ -1,13 +1,12 @@
 keycloakx:
-
   # Use upstream multi-arch image (arm64 works)
   image:
     repository: quay.io/keycloak/keycloak
-    tag: "26.0.7"                 # pick/lock your KC version
+    tag: "26.3.3" # pick/lock your KC version
     pullPolicy: IfNotPresent
 
   replicas: 1
-  resources: {}                   # add limits/requests later
+  resources: {} # add limits/requests later
 
   # Keycloak runtime flags / env
   extraEnv: |
@@ -24,6 +23,8 @@ keycloakx:
 
   database:
     # Supply your own Service/Secret or external endpoint
+    existingSecret: ""
+    existingSecretKey: ""
     vendor: postgres
     host: postgres.postgres.svc.cluster.local
     port: 5432
@@ -38,11 +39,12 @@ keycloakx:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod
       external-dns.alpha.kubernetes.io/host: "keycloak.funderburg.uk"
-    hosts:
-      - host: keycloak.funderburg.uk
-        paths:
-          - path: /
-            pathType: Prefix
+    rules:
+      hosts:
+        - host: keycloak.funderburg.uk
+          paths:
+            - path: /
+              pathType: Prefix
     tls:
       - hosts:
           - keycloak.funderburg.uk
@@ -65,4 +67,3 @@ keycloakx:
     # prometheusRule:
     #   enabled: true
     #   groups: []    # you can port your alert rules later
-
