@@ -54,12 +54,11 @@ keycloakx:
           - keycloak.funderburg.uk
         secretName: "keycloak-cert"
 
-  database:
     # Supply your own Service/Secret or external endpoint
     existingSecret: "external-database"
     existingSecretKey: "password"
     vendor: postgres
-    host: postgres.postgres.svc.cluster.local
+    hostname: postgres.postgres.svc.cluster.local
     port: 5432
     username: keycloak
     database: keycloak
