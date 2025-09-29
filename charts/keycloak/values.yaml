@@ -59,7 +59,7 @@ keycloakx:
     existingSecret: "external-database"
     existingSecretKey: "password"
     vendor: postgres
-    hostname: postgres.postgres.svc.cluster.local
+    hostname: postgresql.postgresql.svc.cluster.local
     port: 5432
     username: keycloak
     database: keycloak
