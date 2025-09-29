@@ -5,6 +5,12 @@ keycloakx:
     # Overrides the Keycloak image tag whose default is the chart appVersion
     tag: "26.3.3"
 
+  command:
+    - "/opt/keycloak/bin/kc.sh"
+    - "start"
+    - "--http-port=8080"
+    - "--hostname-strict=false"
+
   # Keycloak runtime flags / env
   extraEnv: |
     - name: KC_PROXY
@@ -13,6 +19,9 @@ keycloakx:
       value: keycloak.funderburg.uk
     - name: KC_METRICS_ENABLED
       value: "true"
+    - name: JAVA_OPTS_APPEND
+      value: >-
+        -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
 
   # Pod resource requests and limits
   resources:
