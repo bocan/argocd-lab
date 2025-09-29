@@ -54,6 +54,7 @@ keycloakx:
           - keycloak.funderburg.uk
         secretName: "keycloak-cert"
 
+  database:
     # Supply your own Service/Secret or external endpoint
     existingSecret: "external-database"
     existingSecretKey: "password"
