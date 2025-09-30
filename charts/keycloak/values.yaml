@@ -17,8 +17,12 @@ keycloakx:
       value: edge
     - name: KC_HOSTNAME
       value: keycloak.funderburg.uk
+    - name: KC_HOSTNAME_URL
+      value: https://keycloak.funderburg.uk
     - name: KC_METRICS_ENABLED
       value: "true"
+    - name: KC_PROXY_HEADERS
+      value: xforwarded
     - name: JAVA_OPTS_APPEND
       value: >-
         -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
