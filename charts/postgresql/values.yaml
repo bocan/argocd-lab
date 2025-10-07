@@ -7,7 +7,7 @@ postgres:
       secretKey: POSTGRES_PASSWORD
   image:
     repository: postgres
-    tag: "17"
+    tag: "18"
 
   # --- persistence ---
   storage:
