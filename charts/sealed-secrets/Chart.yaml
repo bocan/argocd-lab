@@ -3,7 +3,7 @@ name: sealed-secrets
 version: 1.0.0
 dependencies:
   - name: sealed-secrets
-    version: 2.17.7
+    version: 2.17.9
     repository: https://bitnami-labs.github.io/sealed-secrets
 
 # I allow Bitnimi here because they maintain Sealed Secrets
