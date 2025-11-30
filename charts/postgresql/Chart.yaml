@@ -3,5 +3,5 @@ name: postgresql
 version: 1.0.0
 dependencies:
   - name: postgres
-    version: 1.5.8
+    version: 1.6.0
     repository: https://groundhog2k.github.io/helm-charts
