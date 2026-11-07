@@ -9,6 +9,8 @@ repos:
   hooks:
     - id: check-yaml
       args: [--allow-multiple-documents]
+      # Helm templates are not plain YAML until they are rendered.
+      exclude: ^charts/[^/]+/templates/
     - id: check-added-large-files
     - id: detect-aws-credentials
     - id: trailing-whitespace

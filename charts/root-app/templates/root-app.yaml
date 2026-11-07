@@ -3,8 +3,9 @@ kind: Application
 metadata:
   name: root-app
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  # No resources-finalizer here, on purpose. root-app manages itself, so a
+  # finalizer makes its delete hang. It also means deleting root-app leaves
+  # the child Applications in place. To remove an app, disable it in values.yaml.
 spec:
   project: default
   source:
