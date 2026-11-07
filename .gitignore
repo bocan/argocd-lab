@@ -1,1 +1,4 @@
 charts/**/charts
+# Argo CD resolves chart dependencies from Chart.yaml, and Renovate updates
+# Chart.yaml only, so local lock files go stale.
+charts/**/Chart.lock
