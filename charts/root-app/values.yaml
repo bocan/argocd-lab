@@ -1,0 +1,105 @@
+# Values for the root "app of apps".
+#
+# Each entry under `apps` becomes one Argo CD Application, but only when
+# `enabled: true`. To bring an app back, set `enabled: true`, push, and let
+# root-app sync. To remove an app, set `enabled: false`. Argo CD then deletes
+# the Application and (when `finalizer` is true) everything it deployed.
+
+# Namespace where Argo CD watches for Application objects.
+argocdNamespace: argocd
+project: default
+repoURL: https://github.com/bocan/argocd-lab.git
+targetRevision: HEAD
+
+# Defaults for every app. Any app entry can override any of these keys.
+defaults:
+  # Add resources-finalizer.argocd.argoproj.io, so deleting the Application
+  # also deletes the resources it deployed.
+  finalizer: true
+  # Turn on automated sync. selfHeal and prune only apply when this is true.
+  automated: true
+  selfHeal: true
+  prune: true
+  syncOptions:
+    - CreateNamespace=true
+  retry: {}
+
+apps:
+  argo-cd:
+    enabled: true
+    path: charts/argo-cd
+    namespace: argocd
+    # Never cascade-delete Argo CD from inside Argo CD.
+    finalizer: false
+
+  sealed-secrets:
+    enabled: false
+    path: charts/sealed-secrets
+    namespace: sealed-secrets
+
+  # SealedSecrets for the other apps. The old sealing key is lost, so every
+  # file in directories/all-secrets must be sealed again before you enable it.
+  all-secrets:
+    enabled: false
+    path: directories/all-secrets
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        maxDuration: 3m0s
+        factor: 2
+
+  cert-manager:
+    enabled: false
+    path: charts/cert-manager
+    namespace: cert-manager
+
+  external-dns:
+    enabled: false
+    path: charts/external-dns
+    namespace: external-dns
+
+  descheduler:
+    enabled: false
+    path: charts/descheduler
+    namespace: descheduler
+
+  kube-prometheus-stack:
+    enabled: false
+    path: charts/kube-prometheus-stack
+    namespace: monitoring
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+
+  prometheus-extra:
+    enabled: false
+    path: directories/prometheus-extra
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        maxDuration: 3m0s
+        factor: 2
+
+  loki:
+    enabled: false
+    path: charts/loki
+    namespace: monitoring
+
+  postgresql:
+    enabled: false
+    path: charts/postgresql
+    namespace: postgresql
+
+  keycloak:
+    enabled: false
+    path: charts/keycloak
+    namespace: keycloak
+    selfHeal: false
+    prune: false
+
+  velero:
+    enabled: false
+    path: charts/velero
+    namespace: velero

@@ -1,0 +1,51 @@
+{{- /*
+One Argo CD Application for each enabled entry in .Values.apps.
+Per-app keys override .Values.defaults. hasKey is used instead of merge,
+because merge treats `false` as empty and would replace it with the default.
+*/ -}}
+{{- $d := .Values.defaults }}
+{{- range $name, $app := .Values.apps }}
+{{- if $app.enabled }}
+{{- $finalizer := ternary $app.finalizer $d.finalizer (hasKey $app "finalizer") }}
+{{- $automated := ternary $app.automated $d.automated (hasKey $app "automated") }}
+{{- $selfHeal := ternary $app.selfHeal $d.selfHeal (hasKey $app "selfHeal") }}
+{{- $prune := ternary $app.prune $d.prune (hasKey $app "prune") }}
+{{- $syncOptions := ternary $app.syncOptions $d.syncOptions (hasKey $app "syncOptions") }}
+{{- $retry := ternary $app.retry $d.retry (hasKey $app "retry") }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Values.argocdNamespace }}
+  {{- if $finalizer }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  {{- end }}
+spec:
+  project: {{ $app.project | default $.Values.project }}
+  source:
+    repoURL: {{ $app.repoURL | default $.Values.repoURL }}
+    path: {{ required (printf "apps.%s.path is required" $name) $app.path }}
+    targetRevision: {{ $app.targetRevision | default $.Values.targetRevision }}
+  destination:
+    server: https://kubernetes.default.svc
+    {{- with $app.namespace }}
+    namespace: {{ . }}
+    {{- end }}
+  syncPolicy:
+    {{- if $automated }}
+    automated:
+      selfHeal: {{ $selfHeal }}
+      prune: {{ $prune }}
+    {{- end }}
+    {{- with $retry }}
+    retry:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with $syncOptions }}
+    syncOptions:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+{{- end }}
+{{- end }}
