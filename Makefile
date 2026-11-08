@@ -19,8 +19,8 @@ lint: ## Lint the root app chart
 	helm lint $(ROOT_APP)
 
 .PHONY: test
-test: ## Run render tests for the root app chart
-	bash tests/root-app.sh
+test: ## Run all render tests in tests/
+	@set -e; for t in tests/*.sh; do echo "== $$t"; bash $$t; done
 
 .PHONY: bootstrap
 bootstrap: ## Apply root-app to the cluster (needs Argo CD already running)

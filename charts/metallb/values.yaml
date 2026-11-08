@@ -1,0 +1,11 @@
+# Addresses that MetalLB may give to LoadBalancer services, in layer 2 mode.
+# Keep these outside the DHCP pool and away from the node IPs (.51 to .54).
+ipAddressPool:
+  name: default
+  addresses:
+    - 192.168.0.50/32
+
+metallb:
+  # Layer 2 only. FRR-K8s is the BGP backend and is not needed for L2.
+  frrk8s:
+    enabled: false
