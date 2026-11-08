@@ -16,6 +16,8 @@ defaults:
   # Add resources-finalizer.argocd.argoproj.io, so deleting the Application
   # also deletes the resources it deployed.
   finalizer: true
+  # Optional per app, no default: `namespaceLabels` sets labels on the
+  # destination namespace through managedNamespaceMetadata.
   # Turn on automated sync. selfHeal and prune only apply when this is true.
   automated: true
   selfHeal: true
@@ -31,6 +33,17 @@ apps:
     namespace: argocd
     # Never cascade-delete Argo CD from inside Argo CD.
     finalizer: false
+
+  # LoadBalancer IPs for bare metal. k3s runs with --disable servicelb.
+  metallb:
+    enabled: true
+    path: charts/metallb
+    namespace: metallb-system
+    # The speaker needs host networking and NET_RAW.
+    namespaceLabels:
+      pod-security.kubernetes.io/enforce: privileged
+      pod-security.kubernetes.io/audit: privileged
+      pod-security.kubernetes.io/warn: privileged
 
   sealed-secrets:
     enabled: false
