@@ -1,0 +1,28 @@
+{{- /*
+The StorageClass for NFS volumes on the NAS. It is not the default class:
+local-path stays the default, and apps ask for this one by name.
+
+StorageClass parameters cannot change after creation. To change one, delete
+the StorageClass and let Argo CD make it again. Existing PVs keep working,
+because each PV holds its own copy of the parameters.
+*/ -}}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Values.storageClass.name }}
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: {{ required "nfs.server is required" .Values.nfs.server | quote }}
+  share: {{ required "nfs.share is required" .Values.nfs.share | quote }}
+  subDir: {{ .Values.storageClass.subDir | quote }}
+  onDelete: {{ .Values.storageClass.onDelete | quote }}
+  # Kubernetes does not send mountOptions when it deletes a volume, but the
+  # controller must mount the share to delete or archive the folder. It
+  # reads the options from this Secret instead (csi-driver-nfs issue #260).
+  csi.storage.k8s.io/provisioner-secret-name: mount-options
+  csi.storage.k8s.io/provisioner-secret-namespace: {{ .Release.Namespace }}
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+allowVolumeExpansion: true
+mountOptions:
+  {{- toYaml .Values.nfs.mountOptions | nindent 2 }}

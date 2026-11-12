@@ -52,7 +52,10 @@ out=$(render "${ALL_ON[@]}")
 n_kinds=$(echo "$out" | count '^kind: Application$')
 check "renders every app plus root-app" "$n_kinds" "$((n_apps + 1))"
 check "every Application is in the argocd namespace" "$(echo "$out" | count '^  namespace: argocd$')" "$n_kinds"
-check "finalizer on all apps except argo-cd" "$(echo "$out" | count "$FINALIZER")" "$((n_apps - 1))"
+check "finalizer on all apps except argo-cd and csi-driver-nfs" "$(echo "$out" | count "$FINALIZER")" "$((n_apps - 2))"
+check "csi-driver-nfs has no finalizer" "$(echo "$out" | app_doc csi-driver-nfs | count "$FINALIZER")" "0"
+check "csi-driver-nfs goes to kube-system" \
+  "$(echo "$out" | app_doc csi-driver-nfs | awk '/^    namespace: / {print $2}')" "kube-system"
 check "kube-prometheus-stack uses server-side apply" "$(echo "$out" | count 'ServerSideApply=true')" "1"
 check "keycloak keeps selfHeal off" \
   "$(echo "$out" | awk '/^  name: keycloak$/ {k=1} k && /selfHeal:/ {print $2; exit}')" "false"
