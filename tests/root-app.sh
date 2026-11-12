@@ -2,17 +2,13 @@
 # Render tests for charts/root-app. Needs only helm, grep and awk.
 set -euo pipefail
 
-CHART="$(cd "$(dirname "$0")/.." && pwd)/charts/root-app"
-failures=0
-
-pass() { printf '  ok    %s\n' "$1"; }
-fail() { printf '  FAIL  %s\n' "$1"; failures=$((failures + 1)); }
-check() { if [ "$2" = "$3" ]; then pass "$1"; else fail "$1 (want '$3', got '$2')"; fi; }
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+CHART="$ROOT/charts/root-app"
+. "$ROOT/tests/lib/helpers.sh"
 
 render() { helm template root-app "$CHART" --namespace argocd "$@"; }
 # Application names, sorted, one line.
 app_names() { awk '/^kind: Application$/ {a=1} a && /^  name: / {print $2; a=0}' | sort | xargs; }
-count() { grep -c -- "$1" || true; }
 # Match the list item only, not comments that name the finalizer.
 FINALIZER='^    - resources-finalizer.argocd.argoproj.io$'
 # Print the one rendered document whose metadata.name is $1.
@@ -74,8 +70,4 @@ else
   pass "render without path fails"
 fi
 
-if [ "$failures" -ne 0 ]; then
-  echo "$failures test(s) failed"
-  exit 1
-fi
-echo "all tests passed"
+finish

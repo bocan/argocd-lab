@@ -2,19 +2,13 @@
 # Render tests for charts/metallb. Downloads the MetalLB chart on first run.
 set -euo pipefail
 
-CHART="$(cd "$(dirname "$0")/.." && pwd)/charts/metallb"
-failures=0
-
-pass() { printf '  ok    %s\n' "$1"; }
-fail() { printf '  FAIL  %s\n' "$1"; failures=$((failures + 1)); }
-check() { if [ "$2" = "$3" ]; then pass "$1"; else fail "$1 (want '$3', got '$2')"; fi; }
-count() { grep -c -- "$1" || true; }
-# One "Kind/name" line for each rendered object.
-objects() { awk '/^kind: /{k=$2} /^  name: /{if(k){print k"/"$2; k=""}}'; }
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+CHART="$ROOT/charts/metallb"
+. "$ROOT/tests/lib/helpers.sh"
 
 render() { helm template metallb "$CHART" --namespace metallb-system "$@"; }
 
-[ -d "$CHART/charts" ] || helm dependency build "$CHART" >/dev/null
+deps "$CHART"
 
 echo "metallb chart"
 out=$(render)
@@ -32,8 +26,4 @@ else
   pass "render without addresses fails"
 fi
 
-if [ "$failures" -ne 0 ]; then
-  echo "$failures test(s) failed"
-  exit 1
-fi
-echo "all tests passed"
+finish
