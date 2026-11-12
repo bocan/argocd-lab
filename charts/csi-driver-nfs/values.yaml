@@ -1,0 +1,30 @@
+# The NFS server that the StorageClass uses. Read by templates/.
+nfs:
+  # UGREEN DXP4800 NAS. RAID, export set to SYNC, squash "no mapping".
+  server: 192.168.0.55
+  share: /volume1/pi-cluster
+  # The NAS only serves NFSv3. `hard` makes I/O wait during a NAS reboot
+  # instead of returning errors to the application.
+  mountOptions:
+    - nfsvers=3
+    - hard
+
+storageClass:
+  # The name that kube-prometheus-stack and postgresql already use.
+  name: nfs-client
+  # One folder per PVC, named after it, not pvc-<uuid>. You can read the
+  # names on the NAS, and a rebuilt cluster finds its old data again when
+  # a PVC with the same namespace and name comes back.
+  subDir: ${pvc.metadata.namespace}-${pvc.metadata.name}
+  # When a PVC is deleted, rename its folder to archived-<name> on the NAS.
+  # Nothing is deleted. Clean up by hand.
+  onDelete: archive
+
+csi-driver-nfs:
+  controller:
+    # The snapshotter sidecar needs the VolumeSnapshot CRDs, which this
+    # cluster does not have. Without this, the sidecar fails.
+    enableSnapshotter: false
+    # One replica. More need one node each, because the controller uses a
+    # fixed host port.
+    replicas: 1
