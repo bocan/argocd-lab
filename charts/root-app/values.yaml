@@ -45,13 +45,17 @@ apps:
       pod-security.kubernetes.io/audit: privileged
       pod-security.kubernetes.io/warn: privileged
 
+  # Controller name and namespace are both "sealed-secrets". Seal with:
+  #   kubeseal --controller-name sealed-secrets --controller-namespace sealed-secrets
   sealed-secrets:
-    enabled: false
+    enabled: true
     path: charts/sealed-secrets
     namespace: sealed-secrets
 
   # SealedSecrets for the other apps. The old sealing key is lost, so every
   # file in directories/all-secrets must be sealed again before you enable it.
+  # Secrets for apps that are still off wait in directories/parked-secrets,
+  # which no Application syncs.
   all-secrets:
     enabled: false
     path: directories/all-secrets

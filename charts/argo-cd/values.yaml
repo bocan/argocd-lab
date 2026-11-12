@@ -16,12 +16,8 @@ argo-cd:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       # -- Defines which ingress controller will implement the resource
       ingressClassName: traefik
+      # One TLS entry, secret argocd-server-tls. cert-manager fills it.
       tls: true
-
-      extraTls:
-        - hosts:
-          - argocd.funderburg.uk
-          secretName: argocd-funderburg-uk-tls
     resources:
       limits:
         cpu: 200m
