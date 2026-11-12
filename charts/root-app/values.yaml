@@ -45,6 +45,17 @@ apps:
       pod-security.kubernetes.io/audit: privileged
       pod-security.kubernetes.io/warn: privileged
 
+  # NFS volumes on the NAS: StorageClass nfs-client. kube-system, as the
+  # upstream docs install it, because the pods use the system-*-critical
+  # priority classes.
+  csi-driver-nfs:
+    enabled: true
+    path: charts/csi-driver-nfs
+    namespace: kube-system
+    # Do not cascade-delete a storage driver when the app is turned off. That
+    # would remove the node plugin while pods still have NFS volumes mounted.
+    finalizer: false
+
   # Controller name and namespace are both "sealed-secrets". Seal with:
   #   kubeseal --controller-name sealed-secrets --controller-namespace sealed-secrets
   sealed-secrets:
