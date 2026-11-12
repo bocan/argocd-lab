@@ -131,8 +131,3 @@ apps:
     namespace: keycloak
     selfHeal: false
     prune: false
-
-  velero:
-    enabled: false
-    path: charts/velero
-    namespace: velero
