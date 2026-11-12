@@ -52,12 +52,14 @@ apps:
     path: charts/sealed-secrets
     namespace: sealed-secrets
 
-  # SealedSecrets for the other apps. The old sealing key is lost, so every
-  # file in directories/all-secrets must be sealed again before you enable it.
+  # SealedSecrets for the other apps. They name their own namespaces, so this
+  # Application has no destination namespace. Those namespaces come from the
+  # apps that use them (CreateNamespace=true). The retry covers the first sync,
+  # when a namespace may not exist yet.
   # Secrets for apps that are still off wait in directories/parked-secrets,
-  # which no Application syncs.
+  # which no Application syncs. Seal them again with the new key first.
   all-secrets:
-    enabled: false
+    enabled: true
     path: directories/all-secrets
     retry:
       limit: 5
@@ -66,13 +68,17 @@ apps:
         maxDuration: 3m0s
         factor: 2
 
+  # Route53 DNS-01 credentials: aws-access-key-id and aws-secret-access-key
+  # from all-secrets.
   cert-manager:
-    enabled: false
+    enabled: true
     path: charts/cert-manager
     namespace: cert-manager
 
+  # Route53 credentials file: Secret external-dns from all-secrets, mounted
+  # at /.aws/credentials.
   external-dns:
-    enabled: false
+    enabled: true
     path: charts/external-dns
     namespace: external-dns
 
