@@ -41,6 +41,11 @@ check "argo-cd is enabled" "$(echo "$out" | app_doc argo-cd | count '^kind: Appl
 check "argo-cd has no finalizer" "$(echo "$out" | app_doc argo-cd | count "$FINALIZER")" "0"
 check "root-app has no finalizer" "$(echo "$out" | app_doc root-app | count "$FINALIZER")" "0"
 check "argo-cd creates its namespace" "$(echo "$out" | app_doc argo-cd | count 'CreateNamespace=true')" "1"
+# cert-manager's first sync races the webhook CA injection, so it must retry.
+check "cert-manager retries a failed sync" \
+  "$(echo "$out" | app_doc cert-manager | awk '/^    retry:/ {r=1} r && /limit:/ {print $2; exit}')" "5"
+check "cert-manager first retry waits 10s" \
+  "$(echo "$out" | app_doc cert-manager | awk '/backoff:/ {b=1} b && /duration:/ {print $2; exit}')" "10s"
 
 echo "all $n_apps apps enabled"
 out=$(render "${ALL_ON[@]}")
