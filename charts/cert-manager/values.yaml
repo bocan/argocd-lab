@@ -2,17 +2,19 @@ cert-manager:
   crds:
     enabled: true
 
-  # Resources to provide to the cert-manager webhook pod.
+  # Resources for the cert-manager controller pod.
   #
-  # For example:
-  #  requests:
-  #    cpu: 10m
-  #    memory: 32Mi
+  # requests is what the scheduler reserves. The pods idle near 1m, so 10m
+  # is enough. A CPU limit is a hard cap: above it the kernel throttles the
+  # pod. Keep the limits well above the requests, because some work comes in
+  # bursts. At 10m the controller was throttled in 95% of CPU periods, and
+  # making the ACME account key timed out ("context deadline exceeded").
   #
   # For more information, see [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/).
   resources:
     limits:
-      cpu: 10m
+      # RSA keys for the ACME account and for each certificate.
+      cpu: 200m
       memory: 100Mi
     requests:
       cpu: 10m
@@ -21,7 +23,8 @@ cert-manager:
   webhook:
     resources:
       limits:
-        cpu: 10m
+        # A TLS handshake for each API call that it validates.
+        cpu: 100m
         memory: 128Mi
       requests:
         cpu: 10m
@@ -30,7 +33,8 @@ cert-manager:
   cainjector:
     resources:
       limits:
-        cpu: 10m
+        # Fills its caches at start, then injects the webhook CA bundle.
+        cpu: 100m
         memory: 100Mi
       requests:
         cpu: 10m
